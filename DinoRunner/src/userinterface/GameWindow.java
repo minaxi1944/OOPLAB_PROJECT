@@ -18,6 +18,7 @@ public class GameWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		//To close the program when click on close "X"
 		gameScreen = new GameScreen();
 		add(gameScreen);
+		addKeyListener(gameScreen);   					// have to add key listener in this j frame
 	}
 	
 	public void StartGame() {
