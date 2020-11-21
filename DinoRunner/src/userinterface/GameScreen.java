@@ -7,16 +7,19 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
+import objectGame.MainCharacter;
+
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 	
 	public static final float gravity = 0.1f;
-	private float x = 0;
-	private float y = 0;
-	private float speedY = 0;
+	public static final float groundY = 300;  //by pixel
 	private Thread thread;
 
+	private MainCharacter mainCharacter;
+	
 	public GameScreen() {
 		thread = new Thread(this);		//creating a thread.  if we don't the main thread will be free and can't do any thing on the program when its running 
+		mainCharacter = new MainCharacter();
 	}
 	
 	public void StartGame() {
@@ -28,8 +31,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		while(true) {				//Game loop :Control infinity loop the makes the game keep running
 			
 			try {
-				speedY+=gravity;
-				y+=speedY;			//rectangle moves on y coordinate according to speed given
+				mainCharacter.update();		//Line code for jumping
 				repaint();			// repaint will call paint method again and the rectangle will draw again
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
@@ -43,13 +45,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.blue);
-		g.drawRect((int) x, (int) y, 100, 100); 	// coordinate x,y,width,height of the rectangle
+		g.drawLine(0, (int) groundY, getWidth(), (int) groundY);
+		mainCharacter.draw(g);
 	}
 	
 	
 	@Override
 	public void keyPressed(KeyEvent arg0) {	
-		speedY = -4;							//on press the rectangle jumps
+		mainCharacter.jump();
 	}
 
 	@Override
