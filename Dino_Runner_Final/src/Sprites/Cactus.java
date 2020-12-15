@@ -1,0 +1,81 @@
+package Sprites;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+import anime.Resource;
+
+public class Cactus extends Obstacle{
+	
+	private BufferedImage image;
+	private int positionX, positionY=70;
+	private Rectangle rect;
+	private Dino dino;
+	private boolean isScoreAdded = false;
+	
+	public Cactus(Dino dino) {
+		this.dino = dino;
+		image = Resource.getResourceImage("images/cactus01.png");
+		positionX = 400;
+		positionY = 70;
+		rect = new Rectangle();
+	}
+	
+	@Override
+	public void draw(Graphics g) {
+		//g.drawRect(positionX,positionY, image.getWidth(), image.getHeight());
+		g.drawImage(image, positionX, positionY,image.getWidth(),image.getHeight(), null);
+	}
+	
+	public void update() {
+		positionX = positionX - 5;
+		rect.x = positionX;		//set rectangle position on x axis same as position of cactus image
+		rect.y = positionY;		//set rectangle position on y axis same as position of cactus image
+		rect.width = image.getWidth()-10;		//set rectangle width same as width of cactus image
+		rect.height = image.getHeight()-10;	//set rectangle height same as height of cactus image
+	}
+	
+	public Rectangle getBound() {
+		//return rect;
+		
+		return rect;
+	}
+	
+	public void setPositionX(int x) {
+		positionX = x;
+	}
+	
+	public void setPositionY(int y) {
+		positionY = y;
+	}
+	
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
+	
+	@Override
+	public boolean isOutOfScreen() {
+		return (positionX + image.getWidth() < 0);
+	}
+	
+	@Override
+	public boolean isMiddleOfScreen() {
+		return (positionX + image.getWidth() == 75);
+	}
+	
+	@Override
+	public boolean isGameOver() {
+		return (dino.getX() > positionX);	// if dino crosses obstacle
+	}
+	
+	@Override
+	public boolean isScoreAdd() {
+		return isScoreAdded;
+	}
+	
+	@Override
+	public void setIsScoreAdd(boolean isScoreAdded) {
+		this.isScoreAdded = isScoreAdded;
+	}
+}
